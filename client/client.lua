@@ -80,17 +80,20 @@ if Config.NpcOn then
             local dist = #(playerCoords - npcCoords)
 
             if dist < 5 then
-                if not shown then
-                    if Config.ShowNotify == 'ox' then
-                        lib.showTextUI(Strings['start'])
-                    elseif Config.ShowNotify == 'default' then
-                        DisplayHelpText(Strings['start'])
-                    elseif Config.ShowNotify == 'okok' then
-                        exports['okokTextUI']:Open(Strings['start'], 'darkblue', 'right')
-                    elseif Config.ShowNotify == 'esx' then
-                        ESX.TextUI(Strings['start'], "info")
+                if not inDistance then
+                    inDistance = true 
+                    if not shown then
+                        if Config.ShowNotify == 'ox' then
+                            lib.showTextUI(Strings['start'])
+                        elseif Config.ShowNotify == 'default' then
+                            DisplayHelpText(Strings['start'])
+                        elseif Config.ShowNotify == 'okok' then
+                            exports['okokTextUI']:Open(Strings['start'], 'darkblue', 'right')
+                        elseif Config.ShowNotify == 'esx' then
+                            ESX.TextUI(Strings['start'], "info")
+                        end
+                        shown = true
                     end
-                    shown = true
                 end
 
                 if IsControlJustReleased(0, 51) then
@@ -99,21 +102,25 @@ if Config.NpcOn then
 
                 Citizen.Wait(0)
             else
-                if shown then
-                    if Config.ShowNotify == 'ox' then
-                        lib.hideTextUI()
-                    elseif Config.ShowNotify == 'okok' then
-                        exports['okokTextUI']:Close()
-                    elseif Config.ShowNotify == 'esx' then
-                        ESX.HideUI()
+                if inDistance then
+                    inDistance = false  
+                    if shown then
+                        if Config.ShowNotify == 'ox' then
+                            lib.hideTextUI()
+                        elseif Config.ShowNotify == 'okok' then
+                            exports['okokTextUI']:Close()
+                        elseif Config.ShowNotify == 'esx' then
+                            ESX.HideUI()
+                        end
+                        shown = false
                     end
-                    shown = false
                 end
                 Citizen.Wait(500) 
             end
         end
     end)
 end
+
 
 
 
